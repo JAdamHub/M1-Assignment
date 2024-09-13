@@ -1,4 +1,4 @@
-# PART 0.5: Import necessary libraries - UNMARK # if runned local
+# PART 0.5: Import necessary libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -8,12 +8,10 @@ from scipy.stats import zscore
 import geopandas as gpd
 import altair as alt
 from vega_datasets import data
+from duckduckgo_search import DDGS
+import zipfile
+import requests
 import re
-
-# USED FOR OFFLINE VERSION (TO ALSO DOWNLOAD THE ZIP FILES FROM CLOUD)
-# from duckduckgo_search import DDGS
-# import zipfile
-# import requests
 
 # PART 1: Function to load the data parts and use pd.concat to combine the 3 parts to one dataset
 @st.cache_data  # Cache the function to enhance performance - tells streamlit to keep the dataset in memory/cache
@@ -23,42 +21,41 @@ def loading_dataset():
 
     # LOADING BAR:
     progress_bar = st.progress(2, text="Setting urls...")
-
-    # PLEASE NOTICE - SOME PARTS HERE IS DISABLED DUE TO CSV FILES ARE ALREADY IN REPO  !!!!
+    
     # Defination of url-paths
-#    url1 = 'https://github.com/aaubs/ds-master/raw/main/data/assignments_datasets/KIVA/kiva_loans_part_0.csv.zip'
-#    url2 = 'https://github.com/aaubs/ds-master/raw/main/data/assignments_datasets/KIVA/kiva_loans_part_1.csv.zip'
-#    url3 = 'https://github.com/aaubs/ds-master/raw/main/data/assignments_datasets/KIVA/kiva_loans_part_2.csv.zip'
+    url1 = 'https://github.com/aaubs/ds-master/raw/main/data/assignments_datasets/KIVA/kiva_loans_part_0.csv.zip'
+    url2 = 'https://github.com/aaubs/ds-master/raw/main/data/assignments_datasets/KIVA/kiva_loans_part_1.csv.zip'
+    url3 = 'https://github.com/aaubs/ds-master/raw/main/data/assignments_datasets/KIVA/kiva_loans_part_2.csv.zip'
 
     # Loading the urls into requests to download data
     progress_bar.progress(9, text="Downloading datasets...1/3")
-#    response1 = requests.get(url1)
+    response1 = requests.get(url1)
     progress_bar.progress(32, text="Downloading datasets...2/3")
-#    response2 = requests.get(url2)
+    response2 = requests.get(url2)
     progress_bar.progress(50, text="Downloading datasets...3/3")
-#    response3 = requests.get(url3)
+    response3 = requests.get(url3)
 
     # Saves the .zip data as files
     progress_bar.progress(55, text="Saving dataset zip-file...1/3")
-#    with open("kiva_loans_part_0.csv.zip", "wb") as file:
-#        file.write(response1.content)
+    with open("kiva_loans_part_0.csv.zip", "wb") as file:
+        file.write(response1.content)
     progress_bar.progress(60, text="Saving dataset zip-file...2/3")
-#    with open("kiva_loans_part_1.csv.zip", "wb") as file:
-#        file.write(response2.content)
+    with open("kiva_loans_part_1.csv.zip", "wb") as file:
+        file.write(response2.content)
     progress_bar.progress(65, text="Saving dataset zip-file...3/3")
-#    with open("kiva_loans_part_2.csv.zip", "wb") as file:
-#        file.write(response3.content)
+    with open("kiva_loans_part_2.csv.zip", "wb") as file:
+        file.write(response3.content)
 
     # Unzip the files to get .csv
     progress_bar.progress(70, text="Unzipping dataset...1/3")
-#    with zipfile.ZipFile("kiva_loans_part_0.csv.zip", 'r') as zip_ref:
-#        zip_ref.extractall()
+    with zipfile.ZipFile("kiva_loans_part_0.csv.zip", 'r') as zip_ref:
+        zip_ref.extractall()
     progress_bar.progress(75, text="Unzipping dataset...2/3")
-#    with zipfile.ZipFile("kiva_loans_part_1.csv.zip", 'r') as zip_ref:
-#        zip_ref.extractall()
+    with zipfile.ZipFile("kiva_loans_part_1.csv.zip", 'r') as zip_ref:
+        zip_ref.extractall()
     progress_bar.progress(81, text="Unzipping dataset...3/3")
-#    with zipfile.ZipFile("kiva_loans_part_2.csv.zip", 'r') as zip_ref:
-#        zip_ref.extractall()
+    with zipfile.ZipFile("kiva_loans_part_2.csv.zip", 'r') as zip_ref:
+        zip_ref.extractall()
 
     # Loading partial datasets
     progress_bar.progress(83, text="Importing partial datasets...")
@@ -327,9 +324,9 @@ elif visualization_option == "Frequency of Funded Loans Over Time":
     plt.grid(True)
     st.pyplot(plt)
 
-# if st.button("AI Assitant, explain!!!"):
-#    results = DDGS().chat("You're a smart data analyst. Provide and interpretate the results. Remember to check which Sectors, Gender groups, Country." + str((filtered_data.describe())))
-#    st.write(results)
+if st.button("AI Assitant, explain!!!"):
+    results = DDGS().chat("You're a smart data analyst. Provide and interpretate the results. Remember to check which Sectors, Gender groups, Country." + str((filtered_data.describe())))
+    st.write(results)
 
 # PART BONUS - DEBUGGING
 with st.expander("DEBUGGING 🤓"):
