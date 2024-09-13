@@ -1,0 +1,12 @@
+pandas
+numpy
+matplotlib
+streamlit
+seaborn
+scipy
+geopandas
+altair
+vega_datasets
+# zipfile - Should be included in Python?
+# requests - Same?
+# re - Same?
