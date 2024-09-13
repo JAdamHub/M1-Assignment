@@ -7,6 +7,7 @@ scipy
 geopandas
 altair
 vega_datasets
+duckduckgo_search
 # zipfile - Should be included in Python?
 # requests - Same?
 # re - Same?
